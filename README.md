@@ -1,2 +1,1 @@
-# business-rule-framwork
-Business rule framwork
+# Java Business Rule Framework
