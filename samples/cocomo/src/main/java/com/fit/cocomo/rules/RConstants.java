@@ -1,6 +1,6 @@
-package com.fit.bru.cocomo.rules;
+package com.fit.cocomo.rules;
 
-import com.fit.bru.cocomo.context.ProjectContext;
+import com.fit.cocomo.context.ProjectContext;
 import com.fit.bru.rule.Rule;
 import com.fit.bru.rule.builder.RuleDefinition;
 
