@@ -1,7 +1,8 @@
-package com.fit.bru.cocomo;
+package com.fit.tax;
 
-import com.fit.bru.cocomo.context.ProjectContext;
-import com.fit.bru.cocomo.context.SoftwareType;
+import com.fit.cocomo.CocomoDefinition;
+import com.fit.cocomo.context.ProjectContext;
+import com.fit.cocomo.context.SoftwareType;
 import org.assertj.core.data.Percentage;
 import org.junit.jupiter.api.Test;
 

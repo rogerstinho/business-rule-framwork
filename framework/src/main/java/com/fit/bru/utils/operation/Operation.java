@@ -18,7 +18,7 @@ public final class Operation {
         }
         String[] value = expression.trim().split(ELEMENT_SPARATOR);
 
-        return value.length == 1 ? value[0] : Arrays.stream(value).distinct().sorted().toList();
+        return value.length == 1 ? value[0] : Arrays.stream(value).distinct().toList();
     }
 
     public static Operator getOperator(String expression) {
@@ -61,64 +61,127 @@ public final class Operation {
 
     public static boolean checkOperation(Operator operator, Object rowParameter, Object value) {
         return switch (operator) {
-            case EQUALS -> value != null && (value.equals(rowParameter)
-                    || Objects.equals(value.toString(), rowParameter.toString()));
-
-            case NOT_EQUALS -> value != null
-                    && !value.equals(rowParameter)
-                    && !Objects.equals(value.toString(), rowParameter.toString());
-
-            case LESS_THAN -> value != null
-                    && Float.valueOf(value.toString()) instanceof Float number
-                    && Float.valueOf(rowParameter.toString()) instanceof Float max
-                    && number.compareTo(max) < 0;
-
-            case LESS_THAN_AND_EQUALS -> value != null
-                    && Float.valueOf(value.toString()) instanceof Float number
-                    && Float.valueOf(rowParameter.toString()) instanceof Float max
-                    && number.compareTo(max) <= 0;
-
-            case GREATER_THAN -> value != null
-                    && Float.valueOf(value.toString()) instanceof Float number
-                    && Float.valueOf(rowParameter.toString()) instanceof Float min
-                    && number.compareTo(min) > 0;
-
-            case GREATER_THAN_AND_EQUALS -> value != null
-                    && Float.valueOf(value.toString()) instanceof Float number
-                    && Float.valueOf(rowParameter.toString()) instanceof Float min
-                    && number.compareTo(min) >= 0;
-
-            case IN_INTERVAL_ALL_INCLUDED -> value != null
-                    && Float.valueOf(value.toString()) instanceof Float number
-                    && rowParameter instanceof List<?> interval && interval.size() == 2
-                    && Float.valueOf(interval.getFirst().toString()) instanceof Float min
-                    && Float.valueOf(interval.getLast().toString()) instanceof Float max
-                    && number.compareTo(min) >= 0 && number.compareTo(max) <= 0;
-
-            case IN_INTERVAL_LEFT_INCLUDED -> value != null
-                    && Float.valueOf(value.toString()) instanceof Float number
-                    && rowParameter instanceof List<?> interval && interval.size() == 2
-                    && Float.valueOf(interval.getFirst().toString()) instanceof Float min
-                    && Float.valueOf(interval.getLast().toString()) instanceof Float max
-                    && number.compareTo(min) >= 0 && number.compareTo(max) < 0;
-
-            case IN_INTERVAL_RIGHT_INCLUDED -> value != null
-                    && Float.valueOf(value.toString()) instanceof Float number
-                    && rowParameter instanceof List<?> interval && interval.size() == 2
-                    && Float.valueOf(interval.getFirst().toString()) instanceof Float min
-                    && Float.valueOf(interval.getLast().toString()) instanceof Float max
-                    && number.compareTo(min) > 0 && number.compareTo(max) <= 0;
-
-            case IN_SET -> value != null && rowParameter instanceof List<?> possibleValues
-                    && possibleValues.stream().map(Object::toString).anyMatch(s -> s.matches(value.toString()));
-
-            case NOT_IN_SET -> rowParameter instanceof List<?> possibleValues
-                    && possibleValues.stream().map(Object::toString).noneMatch(s -> s.matches(value.toString()));
-
-            case EQUALS_SET -> value instanceof List<?> values && rowParameter instanceof List<?> possibleValues
-                    && new HashSet<>(possibleValues.stream().map(Object::toString).toList())
-                    .containsAll(values.stream().map(Object::toString).toList());
+            case EQUALS -> checkEquals(rowParameter, value);
+            case NOT_EQUALS -> checkNotEquals(rowParameter, value);
+            case LESS_THAN -> checkLessThan(rowParameter, value);
+            case LESS_THAN_AND_EQUALS -> checkLessThanAndEquals(rowParameter, value);
+            case GREATER_THAN -> checkGreaterThan(rowParameter, value);
+            case GREATER_THAN_AND_EQUALS -> checkGreaterThanAndEquals(rowParameter, value);
+            case IN_INTERVAL_ALL_INCLUDED -> checkInIntervalAllIncluded(rowParameter, value);
+            case IN_INTERVAL_LEFT_INCLUDED -> checkInIntervalLeftIncluded(rowParameter, value);
+            case IN_INTERVAL_RIGHT_INCLUDED -> checkInIntervalRightIncluded(rowParameter, value);
+            case IN_SET -> checkInSet(rowParameter, value);
+            case NOT_IN_SET -> checkNotInSet(rowParameter, value);
+            case EQUALS_SET -> checkEqualsSet(rowParameter, value);
+            case null -> throw new IllegalArgumentException("Operator cannot be null");
         };
 
     }
+
+
+    private static boolean checkEquals(Object rowParameter, Object value) {
+        return value != null && (value.equals(rowParameter)
+                || Objects.equals(value.toString(), rowParameter.toString()));
+    }
+
+    private static boolean checkNotEquals(Object rowParameter, Object value) {
+        return value != null && !value.equals(rowParameter)
+                && !Objects.equals(value.toString(), rowParameter.toString());
+    }
+
+    private static boolean checkLessThan(Object rowParameter, Object value) {
+        if (value == null) return false;
+        Float number = Float.valueOf(value.toString());
+        Float max = Float.valueOf(rowParameter.toString());
+        return number.compareTo(max) < 0;
+    }
+
+    private static boolean checkLessThanAndEquals(Object rowParameter, Object value) {
+        if (value == null) return false;
+        Float number = Float.valueOf(value.toString());
+        Float max = Float.valueOf(rowParameter.toString());
+        return number.compareTo(max) <= 0;
+    }
+
+    private static boolean checkGreaterThan(Object rowParameter, Object value) {
+        if (value == null) return false;
+        Float number = Float.valueOf(value.toString());
+        Float min = Float.valueOf(rowParameter.toString());
+        return number.compareTo(min) > 0;
+    }
+
+    private static boolean checkGreaterThanAndEquals(Object rowParameter, Object value) {
+        if (value == null) return false;
+        Float number = Float.valueOf(value.toString());
+        Float min = Float.valueOf(rowParameter.toString());
+        return number.compareTo(min) >= 0;
+    }
+
+    private static boolean checkInIntervalAllIncluded(Object rowParameter, Object value) {
+        if (value == null) return false;
+
+        Float number = Float.valueOf(value.toString());
+        List<?> interval = (List<?>) rowParameter;
+        if (interval.size() != 2) return false;
+
+        interval = interval.stream()
+                .map(Object::toString)
+                .map(Float::valueOf)
+                .toList();
+        Float min = Float.valueOf(interval.get(0).toString());
+        Float max = Float.valueOf(interval.get(1).toString());
+        return number.compareTo(min) >= 0 && number.compareTo(max) <= 0;
+    }
+
+    private static boolean checkInIntervalLeftIncluded(Object rowParameter, Object value) {
+        if (value == null) return false;
+
+        Float number = Float.valueOf(value.toString());
+        List<?> interval = (List<?>) rowParameter;
+        if (interval.size() != 2) return false;
+
+        interval = interval.stream()
+                .map(Object::toString)
+                .map(Float::valueOf)
+                .toList();
+        Float min = Float.valueOf(interval.get(0).toString());
+        Float max = Float.valueOf(interval.get(1).toString());
+        return number.compareTo(min) >= 0 && number.compareTo(max) < 0;
+    }
+
+    private static boolean checkInIntervalRightIncluded(Object rowParameter, Object value) {
+        if (value == null) return false;
+
+        Float number = Float.valueOf(value.toString());
+        List<?> interval = (List<?>) rowParameter;
+        if (interval.size() != 2) return false;
+
+        interval = interval.stream()
+                .map(Object::toString)
+                .map(Float::valueOf)
+//                .sorted(Float::compareTo)
+                .toList();
+        Float min = Float.valueOf(interval.get(0).toString());
+        Float max = Float.valueOf(interval.get(1).toString());
+        return number.compareTo(min) > 0 && number.compareTo(max) <= 0;
+    }
+
+    private static boolean checkInSet(Object rowParameter, Object value) {
+        return value != null && rowParameter instanceof List<?> possibleValues
+                && possibleValues.stream().map(Object::toString).anyMatch(s -> s.matches(value.toString()));
+    }
+
+    private static boolean checkNotInSet(Object rowParameter, Object value) {
+        return value != null && rowParameter instanceof List<?> possibleValues
+                && possibleValues.stream().map(Object::toString).noneMatch(s -> s.matches(value.toString()));
+    }
+
+    private static boolean checkEqualsSet(Object rowParameter, Object value) {
+        return value instanceof List<?> values && rowParameter instanceof List<?> possibleValues
+                && new HashSet<>(possibleValues.stream().map(Object::toString).toList())
+                .containsAll(values.stream().map(Object::toString).toList());
+    }
+
+
+
 }

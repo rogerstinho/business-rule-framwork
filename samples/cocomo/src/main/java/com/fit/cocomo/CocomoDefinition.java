@@ -1,10 +1,10 @@
-package com.fit.bru.cocomo;
+package com.fit.cocomo;
 
-import com.fit.bru.cocomo.context.ProjectContext;
-import com.fit.bru.cocomo.rules.RConstants;
-import com.fit.bru.cocomo.rules.RDevelopmentTime;
-import com.fit.bru.cocomo.rules.REffort;
-import com.fit.bru.cocomo.rules.RStaff;
+import com.fit.cocomo.context.ProjectContext;
+import com.fit.cocomo.rules.RConstants;
+import com.fit.cocomo.rules.RDevelopmentTime;
+import com.fit.cocomo.rules.REffort;
+import com.fit.cocomo.rules.RStaff;
 import com.fit.bru.rule.builder.RuleDefinition;
 import com.fit.bru.rule.context.RuleElement;
 

@@ -1,4 +1,4 @@
-package com.fit.bru.cocomo.context;
+package com.fit.cocomo.context;
 
 import com.fit.bru.rule.context.RuleExecutionContext;
 
