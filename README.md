@@ -26,7 +26,7 @@ Add the following dependency to your `pom.xml`:
 <dependency>
     <groupId>com.fit.bru</groupId>
     <artifactId>framework</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0</version>
 </dependency>
 ```
 
@@ -36,11 +36,15 @@ This project includes sample implementations to demonstrate the usage of the Jav
 asxs
 ### Available Samples
 
-1. **[Tax Calculation](samples/tax-calculation/README.md)** : 
-    Demonstrates how to calculate taxes based on income using decision tables and business rules.
 
-2. **[COCOMO Estimation](samples/cocomo/README.md)** :
+1. **[COCOMO Estimation](samples/cocomo/README.md)** : **Low complexity example**
+
    Illustrates the use of the framework for software cost estimation using the COCOMO model.
 
-3. **[Payroll](samples/payroll/README.md)** : 
-   Describe a company payroll project implementation with several rules and blend conditions.
+2. **[Tax Calculation](samples/tax-calculation/README.md)** : **Medium complexity example**
+
+    Demonstrates how to calculate taxes based on income using decision tables and business rules.
+
+3. **[Payroll](samples/payroll/README.md)** : **High complexity example**
+
+    Showcases a comprehensive payroll system with multiple rules and conditions for calculating employee salaries, bonuses, and taxes.

@@ -1,8 +1,5 @@
-<p align="center"> 
-  <p align="center" style="text-transform:uppercase;font-weight:700;font-size:25px">
-    Tax Calculation
-  </p>
-</p>
+
+## Tax Calculation
 
 In a given country, all incomes are subjected to tax based on specific ranges. However, there's a rebate of **10%**
 before applying the tax calculation:
@@ -99,9 +96,3 @@ Range #5 => 20% * (180000) = 36000.00
 Total Tax: 36000.00
 
 ```
-
----
-
-> Navigation
-> > [Top](#)
-
