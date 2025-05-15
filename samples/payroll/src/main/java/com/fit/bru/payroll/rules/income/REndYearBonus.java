@@ -12,10 +12,10 @@ public class REndYearBonus extends RuleDefinition<PayrollContext> {
     public Rule<PayrollContext> get() {
         return createRule()
                 .withName("End year Bonus")
-                .withCondition(context -> context.getMonth() != null)
+                .withCondition(context -> context.month() != null)
                 .withAction(context -> {
-                    if (context.getMonth() == Month.DECEMBER) {
-                        context.getEmployee().addBonus(context.getEmployee().getBasicSalary());
+                    if (context.month() == Month.DECEMBER) {
+                        context.employee().addBonus(context.employee().getBasicSalary());
                     }
                 })
                 .build();

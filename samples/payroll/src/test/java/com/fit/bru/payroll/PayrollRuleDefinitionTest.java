@@ -19,8 +19,8 @@ public class PayrollRuleDefinitionTest {
         Employee employee = new Employee(true, 3, Employee.Department.IT,
                 Employee.Level.SENIOR_ANALYST, BigDecimal.valueOf(90_000));
 
-        PayrollContext payrollRuleContext = new PayrollContext(employee);
-        payrollRuleContext.setParticularIncrease(BigDecimal.valueOf(2_000));
+        PayrollContext payrollRuleContext = new PayrollContext(employee, Month.MARCH,
+                BigDecimal.valueOf(2_000));
 
         payrollRuleDefinition.execute(payrollRuleContext);
 
@@ -29,6 +29,7 @@ public class PayrollRuleDefinitionTest {
         assertThat(employee.getBonus()).isEqualByComparingTo(BigDecimal.valueOf(10_200));
         assertThat(employee.getOverallIncome()).isEqualByComparingTo(BigDecimal.valueOf(102_200));
         assertThat(employee.getTaxes()).isEqualByComparingTo(BigDecimal.valueOf(5_428));
+
         assertThat(employee.getNetIncome()).isEqualByComparingTo(BigDecimal.valueOf(96_772));
     }
 
@@ -37,8 +38,7 @@ public class PayrollRuleDefinitionTest {
         Employee employee = new Employee(false, 0, Employee.Department.HR,
                 Employee.Level.MANAGER, BigDecimal.valueOf(50_000));
 
-        PayrollContext payrollRuleContext = new PayrollContext(employee);
-        payrollRuleContext.setMonth(Month.DECEMBER);
+        PayrollContext payrollRuleContext = new PayrollContext(employee, Month.DECEMBER,BigDecimal.ZERO);
 
         payrollRuleDefinition.execute(payrollRuleContext);
 

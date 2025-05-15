@@ -10,11 +10,11 @@ public class RNetIncome extends RuleDefinition<PayrollContext> {
     public Rule<PayrollContext> get() {
         return createRule()
                 .withName("Net Income")
-                .withCondition(context -> context.getEmployee().getOverallIncome() != null)
+                .withCondition(context -> context.employee().getOverallIncome() != null)
                 .withAction(context -> {
-                    var net = context.getEmployee().getOverallIncome()
-                            .subtract(context.getEmployee().getTaxes());
-                    context.getEmployee().setNetIncome(net);
+                    var net = context.employee().getOverallIncome()
+                            .subtract(context.employee().getTaxes());
+                    context.employee().setNetIncome(net);
                 })
                 .build();
     }

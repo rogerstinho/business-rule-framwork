@@ -13,15 +13,15 @@ public class RTaxes extends RuleDefinition<PayrollContext> {
     public Rule<PayrollContext> get() {
         return createRule()
                 .withName("Taxes amount")
-                .withCondition(context -> context.getEmployee().getOverallIncome() != null)
+                .withCondition(context -> context.employee().getOverallIncome() != null)
                 .withAction(context -> {
-                    var taxPercent = context.getEmployee().getTaxRate()
+                    var taxPercent = context.employee().getTaxRate()
                             .divide(BigDecimal.valueOf(100), new MathContext(9));
-                    var exoneration = context.getEmployee().getExoneration();
-                    var overall = context.getEmployee().getOverallIncome();
+                    var exoneration = context.employee().getExoneration();
+                    var overall = context.employee().getOverallIncome();
                     var taxes = overall.subtract(exoneration).multiply(taxPercent);
 
-                    context.getEmployee().setTaxes(taxes);
+                    context.employee().setTaxes(taxes);
                 })
                 .build();
     }

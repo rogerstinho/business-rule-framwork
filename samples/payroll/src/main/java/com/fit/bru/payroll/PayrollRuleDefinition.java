@@ -22,7 +22,7 @@ public class PayrollRuleDefinition extends RuleDefinition<PayrollContext> {
                 .startWith(new RTaxRate().get())
                 .and(new RFamilyBonus().get())
                 .and(new RDepartmentBonus().get())
-                .andIf(context -> context.getMonth() == Month.DECEMBER, new REndYearBonus().get())
+                .andIf(context -> context.month() == Month.DECEMBER, new REndYearBonus().get())
                 .and(new RTransportBonus().get())
                 .and(new ROverallIncome().get())
                 .and(new RTaxes().get())

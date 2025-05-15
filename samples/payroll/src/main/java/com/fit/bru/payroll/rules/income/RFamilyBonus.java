@@ -13,9 +13,9 @@ public class RFamilyBonus extends RuleDefinition<PayrollContext> {
         return createDecisionRule()
                 .withName("Family Bonus")
                 .withDecisiontable("payroll/family-bonus.md")
-                .withDecisionCondition((context) -> context.getEmployee().isMarried())
-                .withDecisionCondition((context) -> context.getEmployee().getNumberDependants())
-                .withDecisionAction((context, bonus) -> context.getEmployee().addBonus(new BigDecimal(bonus))
+                .withDecisionCondition((context) -> context.employee().isMarried())
+                .withDecisionCondition((context) -> context.employee().getNumberDependants())
+                .withDecisionAction((context, bonus) -> context.employee().addBonus(new BigDecimal(bonus))
                 )
                 .build();
     }

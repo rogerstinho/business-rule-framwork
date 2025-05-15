@@ -10,12 +10,12 @@ public class ROverallIncome extends RuleDefinition<PayrollContext> {
     public Rule<PayrollContext> get() {
         return createRule()
                 .withName("Overall Income")
-                .withCondition(context -> context.getEmployee().getBasicSalary() != null)
+                .withCondition(context -> context.employee().getBasicSalary() != null)
                 .withAction(context -> {
-                    var overall = context.getEmployee().getBasicSalary()
-                            .add(context.getEmployee().getBonus())
-                            .add(context.getParticularIncrease());
-                    context.getEmployee().setOverallIncome(overall);
+                    var overall = context.employee().getBasicSalary()
+                            .add(context.employee().getBonus())
+                            .add(context.particularIncrease());
+                    context.employee().setOverallIncome(overall);
                 })
                 .build();
     }

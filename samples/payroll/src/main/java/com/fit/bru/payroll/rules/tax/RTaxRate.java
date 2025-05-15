@@ -13,9 +13,9 @@ public class RTaxRate extends RuleDefinition<PayrollContext> {
         return createDecisionRule()
                 .withName("Tax")
                 .withDecisiontable("payroll/tax.md")
-                .withDecisionCondition((context) -> context.getEmployee().getNumberDependants())
-                .withDecisionAction((context, exoneration) -> context.getEmployee().setExoneration(new BigDecimal(exoneration)))
-                .withDecisionAction((context, tax) -> context.getEmployee().setTaxRate(new BigDecimal(tax)))
+                .withDecisionCondition((context) -> context.employee().getNumberDependants())
+                .withDecisionAction((context, exoneration) -> context.employee().setExoneration(new BigDecimal(exoneration)))
+                .withDecisionAction((context, tax) -> context.employee().setTaxRate(new BigDecimal(tax)))
                 .build();
     }
 }

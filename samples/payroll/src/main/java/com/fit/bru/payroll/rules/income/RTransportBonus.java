@@ -13,9 +13,9 @@ public class RTransportBonus extends RuleDefinition<PayrollContext> {
         return createDecisionRule()
                 .withName("Transport Bonus")
                 .withDecisiontable("payroll/transport-bonus.md")
-                .withDecisionCondition((context) -> context.getEmployee().getDepartment())
-                .withDecisionCondition((context) -> context.getEmployee().getLevel())
-                .withDecisionAction((context, bonus) -> context.getEmployee().addBonus(new BigDecimal(bonus))
+                .withDecisionCondition((context) -> context.employee().getDepartment())
+                .withDecisionCondition((context) -> context.employee().getLevel())
+                .withDecisionAction((context, bonus) -> context.employee().addBonus(new BigDecimal(bonus))
                 )
                 .build();
     }

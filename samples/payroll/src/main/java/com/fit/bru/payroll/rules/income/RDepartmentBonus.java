@@ -15,8 +15,8 @@ public class RDepartmentBonus extends RuleDefinition<PayrollContext> {
                 .withName("Department Bonus")
                 .withDecisiontable("payroll/department-bonus.md")
                 .withDecisionTableStrategy(RuleDecisionTableStrategy.FIRST_ROW_MATCH_EXIT)
-                .withDecisionCondition(context -> context.getEmployee().getDepartment())
-                .withDecisionAction((context, bonus) -> context.getEmployee().addBonus(new BigDecimal(bonus)))
+                .withDecisionCondition(context -> context.employee().getDepartment())
+                .withDecisionAction((context, bonus) -> context.employee().addBonus(new BigDecimal(bonus)))
                 .build();
     }
 }
