@@ -19,7 +19,7 @@ public final class MarkdownTableParser {
         // Prevent instantiation
     }
 
-    public static List<MarkdownRow> parse(String resource) {
+    public static List<String> resourceLines(String resource) {
         try (var inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(resource)) {
 
             if (inputStream == null) {
@@ -27,11 +27,15 @@ public final class MarkdownTableParser {
             }
 
             try (BufferedReader br = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
-                return parse(br.lines().collect(Collectors.toList()));
+                return br.lines().collect(Collectors.toList());
             }
         } catch (IOException e) {
             throw new RuleBuildingException(e);
         }
+    }
+
+    public static List<MarkdownRow> parse(String resource) {
+        return parse(resourceLines(resource));
     }
 
     private static List<MarkdownRow> parse(List<String> lines) {

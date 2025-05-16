@@ -1,6 +1,6 @@
-package com.fit.bru.payroll.rules.income;
+package com.fit.payroll.rules.bonus;
 
-import com.fit.bru.payroll.context.PayrollContext;
+import com.fit.payroll.context.PayrollContext;
 import com.fit.bru.rule.Rule;
 import com.fit.bru.rule.builder.RuleDefinition;
 
@@ -13,8 +13,8 @@ public class RTransportBonus extends RuleDefinition<PayrollContext> {
         return createDecisionRule()
                 .withName("Transport Bonus")
                 .withDecisiontable("payroll/transport-bonus.md")
-                .withDecisionCondition((context) -> context.employee().getDepartment())
-                .withDecisionCondition((context) -> context.employee().getLevel())
+                .withDecisionCondition(context -> context.employee().getDepartment())
+                .withDecisionCondition(context -> context.employee().getLevel())
                 .withDecisionAction((context, bonus) -> context.employee().addBonus(new BigDecimal(bonus))
                 )
                 .build();

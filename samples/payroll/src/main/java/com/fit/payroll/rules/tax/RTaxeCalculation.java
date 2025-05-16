@@ -1,13 +1,13 @@
-package com.fit.bru.payroll.rules.tax;
+package com.fit.payroll.rules.tax;
 
-import com.fit.bru.payroll.context.PayrollContext;
+import com.fit.payroll.context.PayrollContext;
 import com.fit.bru.rule.Rule;
 import com.fit.bru.rule.builder.RuleDefinition;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
 
-public class RTaxes extends RuleDefinition<PayrollContext> {
+public class RTaxeCalculation extends RuleDefinition<PayrollContext> {
 
     @Override
     public Rule<PayrollContext> get() {

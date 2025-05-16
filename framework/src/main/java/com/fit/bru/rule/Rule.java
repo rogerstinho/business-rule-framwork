@@ -18,11 +18,26 @@ import static com.fit.bru.rule.context.RuleDecisionTableStrategy.FIRST_ROW_MATCH
 public final class Rule<T extends RuleExecutionContext> implements NamedRuleElement<T> {
     private final String id;
     private final String name;
+    private final String ruleDecisionTableResource;
     private final List<Predicate<T>> conditions = new LinkedList<>();
     private final List<RuleElement<T>> ruletasks = new LinkedList<>();
     private final RuleDecisionTableStrategy ruleDecisionTableStrategy;
 
     private Rule(String name, RuleDecisionTableStrategy ruleDecisionTableStrategy, List<Predicate<T>> conditions,
+                 List<RuleElement<T>> ruleElements) {
+        this(name, null, ruleDecisionTableStrategy, conditions, ruleElements);
+    }
+
+    /**
+     * Rule constructor
+     *
+     * @param name                      Rule name
+     * @param ruleDecisionTableResource Rule decision table Resource name
+     * @param ruleDecisionTableStrategy Rule decision table strategy
+     * @param conditions                List of conditions
+     * @param ruleElements              List of rule elements
+     */
+    private Rule(String name, String ruleDecisionTableResource, RuleDecisionTableStrategy ruleDecisionTableStrategy, List<Predicate<T>> conditions,
                  List<RuleElement<T>> ruleElements) {
 
         requireRuleItem(ruleElements, name, "Rule tasks should be defined");
@@ -32,6 +47,8 @@ public final class Rule<T extends RuleExecutionContext> implements NamedRuleElem
 
         this.name = name;
         this.ruleDecisionTableStrategy = ruleDecisionTableStrategy;
+        this.ruleDecisionTableResource = ruleDecisionTableResource;
+
         this.ruletasks.addAll(ruleElements);
 
         if (conditions != null) {
@@ -56,6 +73,10 @@ public final class Rule<T extends RuleExecutionContext> implements NamedRuleElem
         return name;
     }
 
+    public List<RuleElement<T>> getRuletasks() {
+        return ruletasks;
+    }
+
     public void addEntryPrecondition(Predicate<T> entryPrecondition) {
         this.conditions.addFirst(entryPrecondition);
     }
@@ -68,6 +89,9 @@ public final class Rule<T extends RuleExecutionContext> implements NamedRuleElem
         return ruleDecisionTableStrategy;
     }
 
+    public String getRuleDecisionTableResource() {
+        return ruleDecisionTableResource;
+    }
 
     public static final class RuleBuilder<T extends RuleExecutionContext> {
         private final List<Predicate<T>> conditions = new LinkedList<>();
@@ -136,6 +160,7 @@ public final class Rule<T extends RuleExecutionContext> implements NamedRuleElem
         private String name;
         private RuleExecutionOption ruleExecutionOption;
         private RuleDecisionTableStrategy ruleDecisionTableStrategy;
+        private String ruleDecisionTableResource;
         private List<MarkdownRow> markdown;
 
         public WithName withName(String name) {
@@ -161,8 +186,8 @@ public final class Rule<T extends RuleExecutionContext> implements NamedRuleElem
 
             public final class WithDecisiontable {
                 private WithDecisiontable(String resource) {
-                    RuleDecisionBuilder.this.
-                            markdown = MarkdownTableParser.parse(resource);
+                    RuleDecisionBuilder.this.ruleDecisionTableResource = resource;
+                    RuleDecisionBuilder.this.markdown = MarkdownTableParser.parse(resource);
                 }
 
                 public static <T extends RuleExecutionContext> BiPredicate<T, Object> getDecisionPredicate(
@@ -261,7 +286,7 @@ public final class Rule<T extends RuleExecutionContext> implements NamedRuleElem
                                 ruletasks.add(new Ruletask<>(ruleExecutionOption, taskConditions, taskActions));
                             });
 
-                            return new Rule<>(name, ruleDecisionTableStrategy, RuleDecisionBuilder.this.preconditions, ruletasks);
+                            return new Rule<>(name, ruleDecisionTableResource, ruleDecisionTableStrategy, RuleDecisionBuilder.this.preconditions, ruletasks);
                         }
                     }
                 }

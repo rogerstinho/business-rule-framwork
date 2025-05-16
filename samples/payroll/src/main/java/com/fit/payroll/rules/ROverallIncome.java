@@ -1,6 +1,6 @@
-package com.fit.bru.payroll.rules;
+package com.fit.payroll.rules;
 
-import com.fit.bru.payroll.context.PayrollContext;
+import com.fit.payroll.context.PayrollContext;
 import com.fit.bru.rule.Rule;
 import com.fit.bru.rule.builder.RuleDefinition;
 
