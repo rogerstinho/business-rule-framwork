@@ -1,4 +1,4 @@
-package com.fit.bru.payroll.context;
+package com.fit.payroll.context;
 
 import com.fit.bru.rule.context.RuleExecutionContext;
 

@@ -1,5 +1,6 @@
 package com.fit.tax;
 
+import com.fit.bru.docs.DocumentationGenerator;
 import com.fit.cocomo.CocomoDefinition;
 import com.fit.cocomo.context.ProjectContext;
 import com.fit.cocomo.context.SoftwareType;
@@ -11,6 +12,22 @@ import static org.assertj.core.api.Assertions.assertThat;
 class CocomoDefinitionTest {
 
     CocomoDefinition cocomoDefinition = new CocomoDefinition();
+
+    public static String getResourceFolder() {
+        // Get the resource folder path using the ClassLoader
+        return Thread.currentThread()
+                .getContextClassLoader()
+                .getResource("")
+                .getFile();
+    }
+
+    // TODO: Fix the path to the resource folder
+    @Test
+    void testCocomoModelDocumentation() {
+        String  folder = "C:\\Users\\roger.k.koufionou\\IdeaProjects\\fit\\business-rule-framwork";
+        DocumentationGenerator.generateDocumentation(folder,"com.fit.cocomo");
+
+    }
 
     @Test
     void testCocomo() {

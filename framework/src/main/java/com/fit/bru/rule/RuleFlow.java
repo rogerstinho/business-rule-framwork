@@ -11,15 +11,17 @@ import static com.fit.bru.exception.RuleBuildingException.requireRuleItem;
 
 public final class RuleFlow<T extends RuleExecutionContext> implements NamedRuleElement<T> {
 
+    private final String id;
     private final String name;
     private final List<Predicate<T>> preconditions = new ArrayList<>();
     private final List<RuleElement<T>> ruletasks = new ArrayList<>();
 
-    private RuleFlow(String name, List<Predicate<T>> preconditions, List<Rule<T>> ruletasks) {
+    private RuleFlow(String name, List<Predicate<T>> preconditions, List<NamedRuleElement<T>> ruletasks) {
 
         requireRuleItem(ruletasks, name, "RuleFlow tasks should be defined");
         requireRuleItem(name, name, "RuleFlow name should be defined");
 
+        this.id = UUID.randomUUID().toString();
         this.name = name;
         this.ruletasks.addAll(ruletasks);
 
@@ -36,13 +38,22 @@ public final class RuleFlow<T extends RuleExecutionContext> implements NamedRule
     }
 
     @Override
+    public String getId() {
+        return this.id;
+    }
+
+    @Override
     public String getName() {
         return name;
     }
 
+    public List<RuleElement<T>> getRuletasks() {
+        return ruletasks;
+    }
+
     public static final class RuleFlowBuilder<T extends RuleExecutionContext> {
         private final List<Predicate<T>> preconditions = new LinkedList<>();
-        private final Map<String, Rule<T>> ruleset = new LinkedHashMap<>();
+        private final Map<String, NamedRuleElement<T>> ruleset = new LinkedHashMap<>();
         private String name;
 
         public WithName withName(String name) {
@@ -65,11 +76,11 @@ public final class RuleFlow<T extends RuleExecutionContext> implements NamedRule
 
             public final class With {
 
-                private With(Rule<T> rule) {
+                private With(NamedRuleElement<T> rule) {
                     RuleFlowBuilder.this.ruleset.putIfAbsent(rule.getId(), rule);
                 }
 
-                public With and(Rule<T> rule) {
+                public With and(NamedRuleElement<T> rule) {
                     RuleFlowBuilder.this.ruleset.putIfAbsent(rule.getId(), rule);
                     return this;
                 }

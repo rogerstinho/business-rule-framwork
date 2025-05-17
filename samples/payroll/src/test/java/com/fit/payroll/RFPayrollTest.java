@@ -1,7 +1,7 @@
-package com.fit.bru.payroll;
+package com.fit.payroll;
 
-import com.fit.bru.payroll.context.Employee;
-import com.fit.bru.payroll.context.PayrollContext;
+import com.fit.payroll.context.Employee;
+import com.fit.payroll.context.PayrollContext;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -9,9 +9,9 @@ import java.time.Month;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class PayrollRuleDefinitionTest {
+class RFPayrollTest {
 
-    PayrollRuleDefinition payrollRuleDefinition = new PayrollRuleDefinition();
+    RFPayroll payrollRuleDefinition = new RFPayroll();
 
     @Test
     void testIncome() {

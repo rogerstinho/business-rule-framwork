@@ -10,8 +10,17 @@
     </parent>
 
     <artifactId>framework</artifactId>
+    <properties>
+        <org.reflections.version>0.10.2</org.reflections.version>
+    </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>org.reflections</groupId>
+            <artifactId>reflections</artifactId>
+            <version>${org.reflections.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
