@@ -1,0 +1,2 @@
+com.fit.bru.spring.BusinessRuleAutoConfiguration
+com.fit.bru.spring.web.BusinessRuleWebAutoConfiguration
