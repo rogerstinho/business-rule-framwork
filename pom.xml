@@ -5,18 +5,20 @@
 
     <groupId>com.fit.bru</groupId>
     <artifactId>business-rule-framework</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
     <packaging>pom</packaging>
     <description>Java Business Rule Framework</description>
 
     <properties>
-        <java.version>21</java.version>
-        <revision>1.0.0</revision>
+        <java.version>25</java.version>
+        <revision>1.1.0</revision>
         <junit.version>5.10.2</junit.version>
     </properties>
 
     <modules>
         <module>framework</module>
+        <module>spring-boot-starter</module>
+        <module>quarkus-starter</module>
     </modules>
 
     <dependencyManagement>

@@ -20,6 +20,10 @@ public final class MarkdownTableParser {
     }
 
     public static List<MarkdownRow> parse(String resource) {
+        return parseTable(resource).rows();
+    }
+
+    public static MarkdownTable parseTable(String resource) {
         try (var inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(resource)) {
 
             if (inputStream == null) {
@@ -34,8 +38,9 @@ public final class MarkdownTableParser {
         }
     }
 
-    private static List<MarkdownRow> parse(List<String> lines) {
-        int headerSize = parseLine(lines.getFirst()).size();
+    private static MarkdownTable parse(List<String> lines) {
+        List<String> headers = parseLine(lines.getFirst());
+        int headerSize = headers.size();
 
         // remove header label
         lines.removeFirst();
@@ -53,7 +58,7 @@ public final class MarkdownTableParser {
                 list.add(markdownRow);
             }
         }
-        return list;
+        return new MarkdownTable(headers, list);
     }
 
 

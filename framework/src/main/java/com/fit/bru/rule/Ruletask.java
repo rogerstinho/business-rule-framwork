@@ -10,16 +10,22 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 import static com.fit.bru.exception.RuleBuildingException.requireRuleItem;
-import static com.fit.bru.rule.context.RuleExecutionOption.ALL;
 
 public final class Ruletask<T extends RuleExecutionContext> implements RuleElement<T> {
-    private final List<Predicate<T>> conditions = new LinkedList<>();
-    private final List<Consumer<T>> actions = new LinkedList<>();
+    private final List<Labeled<Predicate<T>>> conditions = new LinkedList<>();
+    private final List<Labeled<Consumer<T>>> actions = new LinkedList<>();
 
     private final RuleExecutionOption ruleExecutionOption;
 
 
     public Ruletask(final RuleExecutionOption ruleExecutionOption, final List<Predicate<T>> conditions, List<Consumer<T>> actions) {
+        this(conditions == null ? null : Labeled.withDefaultLabels("Condition", conditions),
+                Labeled.withDefaultLabels("Action", requireRuleItem(actions, "Rule task actions should be defined")),
+                ruleExecutionOption);
+    }
+
+    private Ruletask(final List<Labeled<Predicate<T>>> conditions, final List<Labeled<Consumer<T>>> actions,
+                     final RuleExecutionOption ruleExecutionOption) {
         this.ruleExecutionOption = ruleExecutionOption;
         requireRuleItem(actions, "Rule task actions should be defined");
 
@@ -29,17 +35,30 @@ public final class Ruletask<T extends RuleExecutionContext> implements RuleEleme
         this.actions.addAll(actions);
     }
 
-    public Ruletask(final List<Predicate<T>> conditions, final List<Consumer<T>> actions) {
-        this(ALL, conditions, actions);
+    static <T extends RuleExecutionContext> Ruletask<T> labeled(final RuleExecutionOption ruleExecutionOption,
+                                                                final List<Labeled<Predicate<T>>> conditions,
+                                                                final List<Labeled<Consumer<T>>> actions) {
+        return new Ruletask<>(conditions, actions, ruleExecutionOption);
     }
 
     @Override
     public void execute(final T context) {
-        if (canExecuteRule(context, ruleExecutionOption, conditions)) {
-            actions.forEach(action -> action.accept(context));
+        if (canExecuteRule(context, ruleExecutionOption, Labeled.functions(conditions))) {
+            actions.forEach(action -> action.function().accept(context));
         }
     }
 
+    RuleExecutionOption getRuleExecutionOption() {
+        return ruleExecutionOption;
+    }
+
+    List<String> getConditionLabels() {
+        return Labeled.labels(conditions);
+    }
+
+    List<String> getActionLabels() {
+        return Labeled.labels(actions);
+    }
 
     private boolean canExecuteRule(final T context, final RuleExecutionOption ruleExecutionOption, List<Predicate<T>> conditions) {
         return switch (ruleExecutionOption) {
